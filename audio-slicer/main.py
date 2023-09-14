@@ -1,7 +1,7 @@
 import librosa  # Optional. Use any library you like to read audio files.
 import soundfile  # Optional. Use any library you like to write audio files.
 import re
-from slicer2 import Slicer
+from .slicer2 import Slicer
 import argparse
 import logging
 import os
