@@ -2,23 +2,60 @@ import librosa  # Optional. Use any library you like to read audio files.
 import soundfile  # Optional. Use any library you like to write audio files.
 import re
 from slicer2 import Slicer
+import argparse
+import logging
+
+logging.basicConfig(format="[autocut:%(filename)s:L%(lineno)d] %(levelname)-6s %(message)s")
+logging.getLogger().setLevel(logging.INFO)
 
 def main(input: str, options: {threshold: int, min_length:int,min_interval:int, hop_size:int, max_sil_kept:int}):
-    audio, sr = librosa.load(input, sr=None, mono=False)  # Load an audio file with librosa.
-    options.sr = sr
-    options.threshold = options.threshold if options.threshold is not None else -40
-    options.min_length = options.min_length if options.min_length is not None else 5000
-    options.min_interval = options.min_interval if options.min_interval is not None else 300
-    options.hop_size = options.hop_size if options.hop_size is not None else 10
-    options.max_sil_kept = options.max_sil_kept if options.max_sil_kept is not None else 500
-    slicer = Slicer(
-        sr=sr,
-        threshold=-40,
-        min_length=5000,
-        min_interval=300,
-        hop_size=10,
-        max_sil_kept=500
+    parser = argparse.ArgumentParser(
+        description="Edit videos based on transcribed subtitles",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
+
+    parser.add_argument(
+        "-t",
+        "--threshold",
+        help="The RMS threshold presented in dB. Areas where all RMS values are below this threshold will be regarded as silence. Increase this value if your audio is noisy. Defaults to -40",
+        type=int,
+        default=-40
+    )
+    parser.add_argument(
+        "-ml",
+        "--min_length",
+        help="The minimum length required for each sliced audio clip, presented in milliseconds. Defaults to 5000",
+        type=int,
+        default=5000
+    )
+
+    parser.add_argument(
+        "-mi",
+        "--min_interval",
+        help=("The minimum length for a silence part to be sliced, presented in milliseconds. Set this value smaller if your audio contains only short breaks. The smaller this value is, the more sliced audio clips this script is likely to generate. Note that this value must be smaller than min_length and larger than hop_size. Defaults to 300."),
+        type=int,
+        default=300
+    )
+    parser.add_argument(
+        "-hs",
+        "--hop_size",
+        help=("Length of each RMS frame, presented in milliseconds. Increasing this value will increase the precision of slicing, but will slow down the process. Defaults to 10."),
+        type=int,
+        default=10
+    )
+    parser.add_argument(
+        "-msk",
+        "--max_sil_kept",
+        help=("The maximum silence length kept around the sliced audio, presented in milliseconds. Adjust this value according to your needs. Note that setting this value does not mean that silence parts in the sliced audio have exactly the given length. The algorithm will search for the best position to slice, as described above. Defaults to 1000."),
+        type=int,
+        default=1000
+    )
+    
+    audio, sr = librosa.load(input, sr=None, mono=False)  # Load an audio file with librosa.
+    args = parser.parse_args()
+    args.sr = sr
+    
+    slicer = Slicer(args)
     chunks = slicer.slice(audio)
     
     input = input.replace("\\", "/")
