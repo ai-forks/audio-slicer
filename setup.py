@@ -13,7 +13,7 @@ setup(
     packages=find_packages(),
     entry_points={
         "console_scripts": [
-            "audio-slicer = audio-slicer.main:main",
+            "audio-slicer = src.main:main",
         ]
     },
 )
