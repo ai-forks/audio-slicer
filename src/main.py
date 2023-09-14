@@ -8,8 +8,10 @@ import os
 import glob
 
 
-logging.basicConfig(format="[autocut:%(filename)s:L%(lineno)d] %(levelname)-6s %(message)s")
+logging.basicConfig(
+    format="[autocut:%(filename)s:L%(lineno)d] %(levelname)-6s %(message)s")
 logging.getLogger().setLevel(logging.INFO)
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -60,30 +62,45 @@ def main():
         default=1000
     )
     args = parser.parse_args()
-    
-    input = args.input if isabs_path(args.input) else os.path.join(os.path.curdir, args.input) 
+
+    input = args.input if isabs_path(
+        args.input) else os.path.join(os.path.curdir, args.input)
     print(f"input={input}")
-    if os.path.isfile(input) :
-        handle(input, args)
-    elif os.path.isdir(input) :
+    if os.path.isfile(input):
+        handle(
+            file=input,
+            threshold=threshold,
+            min_length=min_length,
+            min_interval=min_interval,
+            hop_size=hop_size,
+            max_sil_kept=max_sil_kept
+        )
+    elif os.path.isdir(input):
         dir = input
         files = glob.glob(dir+"/*.(mp3|wav|flac)")
         print(f"files={files}")
         for i, name in files:
-            handle(os.path.join(dir, name), args)
+            handle(
+                file=os.path.join(dir, name),
+                threshold=threshold,
+                min_length=min_length,
+                min_interval=min_interval,
+                hop_size=hop_size,
+                max_sil_kept=max_sil_kept
+            )
 
-    
-    
+
 def handle(
-    file: str, 
-    threshold:int,
-    min_length:int,
-    min_interval:int,
-    hop_size:int,
-    max_sil_kept:int
+    file: str,
+    threshold: int,
+    min_length: int,
+    min_interval: int,
+    hop_size: int,
+    max_sil_kept: int
 ):
     print(f"handle==={file}")
-    audio, sr = librosa.load(file, sr=None, mono=False)  # Load an audio file with librosa.    
+    # Load an audio file with librosa.
+    audio, sr = librosa.load(file, sr=None, mono=False)
     slicer = Slicer(
         sr=sr,
         threshold=threshold,
@@ -93,15 +110,16 @@ def handle(
         max_sil_kept=max_sil_kept
     )
     chunks = slicer.slice(audio)
-    
+
     input = input.replace("\\", "/")
     name = re.split("/", input)[-1].split(".")[0]
     print(f"name={name}")
     for i, chunk in enumerate(chunks):
         if len(chunk.shape) > 1:
             chunk = chunk.T  # Swap axes if the audio is stereo.
-        soundfile.write(f'clips/{name}_{i}.wav', chunk, sr)  # Save sliced audio files with soundfile.
-    
+        # Save sliced audio files with soundfile.
+        soundfile.write(f'clips/{name}_{i}.wav', chunk, sr)
+
 
 def isabs_path(path: str):
     if re.match(r"\d+:/?|\\?.*", path):
