@@ -72,18 +72,24 @@ def main():
 
     
     
-def handle(file: str, args: {
+def handle(
+    file: str, 
     threshold:int,
     min_length:int,
     min_interval:int,
     hop_size:int,
-    max_sil_kept:int}
+    max_sil_kept:int
 ):
     print(f"handle==={file}")
-    audio, sr = librosa.load(file, sr=None, mono=False)  # Load an audio file with librosa.
-    args.sr = sr
-    
-    slicer = Slicer(args)
+    audio, sr = librosa.load(file, sr=None, mono=False)  # Load an audio file with librosa.    
+    slicer = Slicer(
+        sr=sr,
+        threshold=threshold,
+        min_length=min_length,
+        min_interval=min_interval,
+        hop_size=hop_size,
+        max_sil_kept=max_sil_kept
+    )
     chunks = slicer.slice(audio)
     
     input = input.replace("\\", "/")
