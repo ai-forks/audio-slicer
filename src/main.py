@@ -119,9 +119,9 @@ def handle(
             chunk = chunk.T  # Swap axes if the audio is stereo.
         # Save sliced audio files with soundfile.
         outdir = (f"clips_{name}")
-        print(f"===>{outdir} {os.path.exists(outdir)}")
         if os.path.exists(outdir) != True :
-            os.mkdir("clips")
+            print(f"create dir {os.path.join(outdir)}")
+            os.mkdir(outdir)
         soundfile.write(f'{outdir}/{name}_{i}.wav', chunk, sr)
 
 
