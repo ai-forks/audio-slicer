@@ -60,11 +60,13 @@ def main():
         default=1000
     )
     args = parser.parse_args()
-
-    if os.path.isfile(args.input) :
-        handle(args.input, args)
-    elif os.path.isdir(args.input) :
-        dir = args.input
+    
+    input = args.input if isabs_path(args.input) else os.path.join(os.path.curdir, args.input) 
+    print(f"input={input}")
+    if os.path.isfile(input) :
+        handle(input, args)
+    elif os.path.isdir(input) :
+        dir = input
         files = glob.glob(dir+"/*.(mp3|wav|flac)")
         print(f"files={files}")
         for i, name in files:
@@ -100,3 +102,8 @@ def handle(
             chunk = chunk.T  # Swap axes if the audio is stereo.
         soundfile.write(f'clips/{name}_{i}.wav', chunk, sr)  # Save sliced audio files with soundfile.
     
+
+def isabs_path(path: str):
+    if re.match(r"\d+:/?|\\?.*", path):
+        return True
+    return False
