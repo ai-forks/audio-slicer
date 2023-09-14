@@ -13,7 +13,7 @@ setup(
     packages=find_packages(),
     entry_points={
         "console_scripts": [
-            "audio-slicer = slicer2: autocut.main:main",
+            "audio-slicer = main:main",
         ]
     },
 )
