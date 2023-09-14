@@ -12,7 +12,7 @@ setup(
     version="1.0.0",
     description="Automatically segregates audio and cleans up muted parts",
     author="leochen",
-    author_email="leowest1921@gmail.com",
+    author_email="markchen0312@gmail.com",
     url="https://github.com/ai-forks/audio-slicer",
     license="MIT",
     install_requires=requirements,
