@@ -20,7 +20,7 @@ def main():
         "-i",
         "--input",
         help="intpu files",
-        type=int,
+        type=str,
         default=-40
     )
     parser.add_argument(
