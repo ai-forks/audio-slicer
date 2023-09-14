@@ -111,8 +111,8 @@ def handle(
     )
     chunks = slicer.slice(audio)
 
-    input = input.replace("\\", "/")
-    name = re.split("/", input)[-1].split(".")[0]
+    file = file.replace("\\", "/")
+    name = re.split("/", file)[-1].split(".")[0]
     print(f"name={name}")
     for i, chunk in enumerate(chunks):
         if len(chunk.shape) > 1:
