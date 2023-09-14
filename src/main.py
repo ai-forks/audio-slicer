@@ -72,7 +72,7 @@ def main():
 
     
     
-def handle(file: string, args: {
+def handle(file: str, args: {
     threshold:int,
     min_length:int,
     min_interval:int,
