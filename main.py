@@ -4,16 +4,25 @@ import re
 from slicer2 import Slicer
 import argparse
 import logging
+import os
+import glob
+
 
 logging.basicConfig(format="[autocut:%(filename)s:L%(lineno)d] %(levelname)-6s %(message)s")
 logging.getLogger().setLevel(logging.INFO)
 
-def main(input: str, options: {threshold: int, min_length:int,min_interval:int, hop_size:int, max_sil_kept:int}):
+def main():
     parser = argparse.ArgumentParser(
         description="Edit videos based on transcribed subtitles",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-
+    parser.add_argument(
+        "-i",
+        "--input",
+        help="intpu files",
+        type=int,
+        default=-40
+    )
     parser.add_argument(
         "-t",
         "--threshold",
@@ -50,9 +59,28 @@ def main(input: str, options: {threshold: int, min_length:int,min_interval:int, 
         type=int,
         default=1000
     )
-    
-    audio, sr = librosa.load(input, sr=None, mono=False)  # Load an audio file with librosa.
     args = parser.parse_args()
+
+    if os.path.isfile(args.input) :
+        handle(args.input, args)
+    elif os.path.isdir(args.input) :
+        dir = args.input
+        files = glob.glob(dir+"/*.(mp3|wav|flac)")
+        print(f"files={files}")
+        for i, name in files:
+            handle(os.path.join(dir, name), args)
+
+    
+    
+def handle(file: string, args: {
+    threshold:int,
+    min_length:int,
+    min_interval:int,
+    hop_size:int,
+    max_sil_kept:int}
+):
+    print(f"handle==={file}")
+    audio, sr = librosa.load(file, sr=None, mono=False)  # Load an audio file with librosa.
     args.sr = sr
     
     slicer = Slicer(args)
@@ -65,3 +93,4 @@ def main(input: str, options: {threshold: int, min_length:int,min_interval:int, 
         if len(chunk.shape) > 1:
             chunk = chunk.T  # Swap axes if the audio is stereo.
         soundfile.write(f'clips/{name}_{i}.wav', chunk, sr)  # Save sliced audio files with soundfile.
+    
