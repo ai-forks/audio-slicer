@@ -1,9 +1,9 @@
 from setuptools import setup, find_packages
 
 requirements = [
-    "numpy==1.22.4",
-    "librosa==0.9.2",
-    "soundfile==0.10.3.post1"
+    "numpy",
+    "librosa",
+    "soundfile"
 ]
 
 
