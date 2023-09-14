@@ -43,9 +43,9 @@ def main():
     parser.add_argument(
         "-mi",
         "--min_interval",
-        help=("The minimum length for a silence part to be sliced, presented in milliseconds. Set this value smaller if your audio contains only short breaks. The smaller this value is, the more sliced audio clips this script is likely to generate. Note that this value must be smaller than min_length and larger than hop_size. Defaults to 300."),
+        help=("The minimum length for a silence part to be sliced, presented in milliseconds. Set this value smaller if your audio contains only short breaks. The smaller this value is, the more sliced audio clips this script is likely to generate. Note that this value must be smaller than min_length and larger than hop_size. Defaults to 100."),
         type=int,
-        default=300
+        default=100
     )
     parser.add_argument(
         "-hs",

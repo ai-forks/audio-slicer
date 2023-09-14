@@ -43,7 +43,7 @@ class Slicer:
                  sr: int,
                  threshold: float = -40.,
                  min_length: int = 5000,
-                 min_interval: int = 300,
+                 min_interval: int = 100,
                  hop_size: int = 20,
                  max_sil_kept: int = 5000):
         if not min_length >= min_interval >= hop_size:
