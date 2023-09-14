@@ -65,15 +65,15 @@ def main():
 
     input = args.input if isabs_path(
         args.input) else os.path.join(os.path.curdir, args.input)
-    print(f"input={input}")
+    print(f"input={input} {args}")
     if os.path.isfile(input):
         handle(
             file=input,
-            threshold=threshold,
-            min_length=min_length,
-            min_interval=min_interval,
-            hop_size=hop_size,
-            max_sil_kept=max_sil_kept
+            threshold=args.threshold,
+            min_length=args.min_length,
+            min_interval=args.min_interval,
+            hop_size=args.hop_size,
+            max_sil_kept=args.max_sil_kept
         )
     elif os.path.isdir(input):
         dir = input
@@ -82,11 +82,11 @@ def main():
         for i, name in files:
             handle(
                 file=os.path.join(dir, name),
-                threshold=threshold,
-                min_length=min_length,
-                min_interval=min_interval,
-                hop_size=hop_size,
-                max_sil_kept=max_sil_kept
+                threshold=args.threshold,
+                min_length=args.min_length,
+                min_interval=args.min_interval,
+                hop_size=args.hop_size,
+                max_sil_kept=args.max_sil_kept
             )
 
 
