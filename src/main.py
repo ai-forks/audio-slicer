@@ -118,6 +118,8 @@ def handle(
         if len(chunk.shape) > 1:
             chunk = chunk.T  # Swap axes if the audio is stereo.
         # Save sliced audio files with soundfile.
+        if os.path.exists("./clips") != True :
+            os.mkdir("clips")
         soundfile.write(f'clips/{name}_{i}.wav', chunk, sr)
 
 
