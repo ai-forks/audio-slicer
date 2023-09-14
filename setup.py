@@ -9,6 +9,12 @@ requirements = [
 
 setup(
     name="audio-slicer",
+    version="1.0.0",
+    description="Automatically segregates audio and cleans up muted parts",
+    author="leochen",
+    author_email="leowest1921@gmail.com",
+    url="https://github.com/ai-forks/audio-slicer",
+    license="MIT",
     install_requires=requirements,
     packages=find_packages(),
     entry_points={
