@@ -22,8 +22,7 @@ def main():
         "-i",
         "--input",
         help="intpu files",
-        type=str,
-        default=-40
+        type=str
     )
     parser.add_argument(
         "-t",
@@ -43,9 +42,9 @@ def main():
     parser.add_argument(
         "-mi",
         "--min_interval",
-        help=("The minimum length for a silence part to be sliced, presented in milliseconds. Set this value smaller if your audio contains only short breaks. The smaller this value is, the more sliced audio clips this script is likely to generate. Note that this value must be smaller than min_length and larger than hop_size. Defaults to 100."),
+        help=("The minimum length for a silence part to be sliced, presented in milliseconds. Set this value smaller if your audio contains only short breaks. The smaller this value is, the more sliced audio clips this script is likely to generate. Note that this value must be smaller than min_length and larger than hop_size. Defaults to 300."),
         type=int,
-        default=100
+        default=300
     )
     parser.add_argument(
         "-hs",
