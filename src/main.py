@@ -141,7 +141,7 @@ def handle(
 
     file = file.replace("\\", "/")
     name = re.split("/", file)[-1].split(".")[0]
-    print(f"name={name}")
+    print(f"name={name}", chunks)
     for i, chunk in enumerate(chunks):
         if len(chunk.shape) > 1:
             chunk = chunk.T  # Swap axes if the audio is stereo.
