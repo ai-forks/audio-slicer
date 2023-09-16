@@ -17,6 +17,7 @@ def slicer_time(file: str, time_unit:int=20000):
     print(f"====chunks={segs}")
     for i, seg in enumerate(segs):
         chunk = seg.get_array_of_samples()
+        chunk = np.array(chunk, dtype=np.float32)
         #chunk_name = "chunk{0}.wav".format(i)
         print ("exporting", i, chunk)
         #chunk.export(chunk_name, format="wav")
