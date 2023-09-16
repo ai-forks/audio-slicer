@@ -130,7 +130,7 @@ def handle(
     duration = librosa.get_duration(y=audio, sr=sr)
     print(f"num_sections={num_sections} {len(audio)} {sr} {duration}")
     if mode == u"time":
-        chunks = slicer_time(file, time_unit)
+        chunks = slicer_time(y=audio, sr=sr, time_unit=time_unit)
     else:
         slicer = Slicer(
             sr=sr,
@@ -140,7 +140,7 @@ def handle(
             hop_size=hop_size,
             max_sil_kept=max_sil_kept
         )
-        print("audio m1", audio)
+        print("audio m1", audio, audio.shape)
         chunks = slicer.slice(audio)
 
     file = file.replace("\\", "/")

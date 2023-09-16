@@ -2,27 +2,16 @@ from pydub import AudioSegment
 from pydub.utils import make_chunks
 import re
 import numpy as np
+import librosa
+import match
 # 按时间切换, 默认20s
-def slicer_time(file: str, time_unit:int=20000):
-    file = file.replace("\\", "/")
-    names = ext = re.split("/", file)[-1]
-    name = names.split(".")[0]
-    ext = names.split(".")[1]
-    ext = ext if ext is not None and len(ext) > 0 else "wav"
-    print(f"slicer_time file={file} ext={ext}")
-    audio = AudioSegment.from_file(file, ext)
-    size = time_unit   #切割的毫秒数 10s=10000
+def slicer_time(y: np.array, sr:int, time_unit:int=20000):
+    duration = librosa.get_duration(y=audio, sr=sr)
+    count = match.ceil(duration *1000 /time_unit)
     chunks = []
-    segs = make_chunks(audio, size)  #将文件切割为10s一块
-    print(f"====chunks={segs}")
-    for i, seg in enumerate(segs):
-        chunk = seg.get_array_of_samples()
-        chunk = np.array(chunk, dtype=np.float32).reshape(-1, 2)
-        #chunk_name = "chunk{0}.wav".format(i)
-        print ("exporting", i, chunk, audio.channels)
-        #chunk.export(chunk_name, format="wav")
-        chunks.append(chunk)
-    print(f"outreoult = {chunks}")
+    for i in range(count):
+        chunks.append()
+        
     return chunks
     
 def pydub_to_np(audio: AudioSegment) -> (np.ndarray, int):
