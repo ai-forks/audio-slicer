@@ -1,9 +1,7 @@
 from pydub import AudioSegment
 from pydub.utils import make_chunks
 import re
-import numpy as np
-import librosa
-import match
+
 # 按时间切换, 默认20s
 def slicer_time(file:str, time_unit:int=20000):
     file = file.replace("\\", "/")
