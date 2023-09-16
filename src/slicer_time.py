@@ -1,7 +1,7 @@
 from pydub import AudioSegment
 from pydub.utils import make_chunks
 import re
-
+import numpy as np
 # 按时间切换, 默认20s
 def slicer_time(file: str, time_unit:int=20000):
     file = file.replace("\\", "/")
@@ -16,11 +16,9 @@ def slicer_time(file: str, time_unit:int=20000):
     cuts = make_chunks(audio, size)  #将文件切割为10s一块
     print(f"====chunks={cuts}")
     for i, seg in enumerate(cuts):
-        chunk = seg.raw_data
-        if chunk is None :
-            continue
+        chunk = np.array(seg.raw_data)
         #chunk_name = "chunk{0}.wav".format(i)
-        print ("exporting", i, seg.raw_data.shape)
+        print ("exporting", i, chunk)
         #chunk.export(chunk_name, format="wav")
-        chunks.append(seg.raw_data)
+        chunks.append(chunk)
     return chunks
