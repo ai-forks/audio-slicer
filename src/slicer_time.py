@@ -18,9 +18,10 @@ def slicer_time(file: str, time_unit:int=20000):
     for i, seg in enumerate(segs):
         chunk = pydub_to_np(seg)
         #chunk_name = "chunk{0}.wav".format(i)
-        print ("exporting", i, seg.channels, chunk)
+        print ("exporting", i, seg.channels)
         #chunk.export(chunk_name, format="wav")
         chunks.append(chunk)
+    print(f"outreoult = {chunks}")
     return chunks
     
 def pydub_to_np(audio: AudioSegment) -> (np.ndarray, int):
