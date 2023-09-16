@@ -124,10 +124,10 @@ def handle(
 ):
     print(f"handle==={file}")
     # Load an audio file with librosa.
-    audio, sr = librosa.load(file, sr=None, mono=False)
     if mode == u"time":
         chunks = slicer_time(file, time_unit)
     else:
+        audio, sr = librosa.load(file, sr=None, mono=False)
         slicer = Slicer(
             sr=sr,
             threshold=threshold,
@@ -136,6 +136,7 @@ def handle(
             hop_size=hop_size,
             max_sil_kept=max_sil_kept
         )
+        print("audio m1", audio)
         chunks = slicer.slice(audio)
 
     file = file.replace("\\", "/")

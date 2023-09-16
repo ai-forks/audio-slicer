@@ -16,9 +16,9 @@ def slicer_time(file: str, time_unit:int=20000):
     segs = make_chunks(audio, size)  #将文件切割为10s一块
     print(f"====chunks={segs}")
     for i, seg in enumerate(segs):
-        chunk = pydub_to_np(seg)
+        chunk = seg.get_array_of_samples()
         #chunk_name = "chunk{0}.wav".format(i)
-        print ("exporting", i, seg.channels)
+        print ("exporting", i, chunk)
         #chunk.export(chunk_name, format="wav")
         chunks.append(chunk)
     print(f"outreoult = {chunks}")
