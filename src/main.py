@@ -127,7 +127,8 @@ def handle(
     # Load an audio file with librosa.
     audio, sr = librosa.load(file, sr=None, mono=False)
     num_sections = np.ceil(len(audio) / sr)
-    print(f"num_sections={num_sections} {len(audio)} {sr}")
+    duration = librosa.get_duration(audio, sr=sr)
+    print(f"num_sections={num_sections} {len(audio)} {sr} {duration}")
     if mode == u"time":
         chunks = slicer_time(file, time_unit)
     else:
