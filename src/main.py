@@ -7,6 +7,7 @@ import argparse
 import logging
 import os
 import glob
+import numpy as np
 
 
 logging.basicConfig(
@@ -124,10 +125,12 @@ def handle(
 ):
     print(f"handle==={file}")
     # Load an audio file with librosa.
+    audio, sr = librosa.load(file, sr=None, mono=False)
+    num_sections = np.ceil(len(audio) / sr)
+    print(f"num_sections={num_sections} {len(audio)} {sr}")
     if mode == u"time":
         chunks = slicer_time(file, time_unit)
     else:
-        audio, sr = librosa.load(file, sr=None, mono=False)
         slicer = Slicer(
             sr=sr,
             threshold=threshold,
