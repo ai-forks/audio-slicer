@@ -15,8 +15,9 @@ def slicer_time(file: str, time_unit:int=20000):
     chunks = []
     cuts = make_chunks(audio, size)  #将文件切割为10s一块
     print(f"====chunks={cuts}")
-    for i, x in cuts.items():
-        #chunk_name = "{name}-{0}.{ext}".format(i)
-        #chunks.append(item.)
-        print(f"===>{i} {x}")
+    for i, seg in enumerate(cuts):
+        #chunk_name = "chunk{0}.wav".format(i)
+        print ("exporting", raw_data)
+        #chunk.export(chunk_name, format="wav")
+        chunks.append(seg.raw_data)
     return chunks
