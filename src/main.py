@@ -31,7 +31,6 @@ def main():
         help="Cutting mode, mute cuts audio by mute, time cuts by time period, default mute",
         type=str,
         default="mute",
-        action=argparse.BooleanOptionalAction,
         choices=[
             "mute",
             "time"
