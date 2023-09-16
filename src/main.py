@@ -40,7 +40,7 @@ def main():
     parser.add_argument(
         "-time_unit",
         "--time_unit",
-        help="Cutting mode mute by time,ms",
+        help="Cutting mode time by time,ms",
         type=int,
         default=20 * 1000,
     )
@@ -126,7 +126,7 @@ def handle(
     print(f"handle==={file}")
     # Load an audio file with librosa.
     audio, sr = librosa.load(file, sr=None, mono=False)
-    if model == "mute":
+    if model == "time":
         chunks = slicer_time(file, time_unit)
     else:
         slicer = Slicer(
