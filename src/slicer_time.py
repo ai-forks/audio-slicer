@@ -23,7 +23,7 @@ def slicer_time(file: str, time_unit:int=20000):
         chunks.append(chunk)
     return chunks
     
-def pydub_to_np(audio: pydub.AudioSegment) -> (np.ndarray, int):
+def pydub_to_np(audio: AudioSegment) -> (np.ndarray, int):
     """
     Converts pydub audio segment into np.float32 of shape [duration_in_seconds*sample_rate, channels],
     where each value is in range [-1.0, 1.0]. 
