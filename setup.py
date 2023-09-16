@@ -3,13 +3,14 @@ from setuptools import setup, find_packages
 requirements = [
     "numpy",
     "librosa",
-    "soundfile"
+    "soundfile",
+    "pydub"
 ]
 
 
 setup(
     name="audio-slicer",
-    version="1.0.0",
+    version="1.0.1",
     description="Automatically segregates audio and cleans up muted parts",
     author="leochen",
     author_email="markchen0312@gmail.com",

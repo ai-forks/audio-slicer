@@ -1,0 +1,15 @@
+from pydub import AudioSegment
+from pydub.utils import make_chunks
+import soundfile  # Optional. Use any library you like to write audio files.
+
+# 按时间切换, 默认20s
+def slicer_time(file: str, time_unit:int=20000):
+    file = file.replace("\\", "/")
+    #names = ext = re.split("/", file)[-1]
+    #name = names.split(".")[0]
+    #ext = names.split(".")[1]
+    #ext = ext if ext is not None and len(ext) > 0 else "wav"
+    audio = AudioSegment.from_file(file, ext)
+    size = time_unit   #切割的毫秒数 10s=10000
+    chunks = make_chunks(audio, size)  #将文件切割为10s一块
+    return chunks

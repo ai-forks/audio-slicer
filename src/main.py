@@ -2,6 +2,7 @@ import librosa  # Optional. Use any library you like to read audio files.
 import soundfile  # Optional. Use any library you like to write audio files.
 import re
 from .slicer2 import Slicer
+from .slicer_time import slicer_time
 import argparse
 import logging
 import os
@@ -23,6 +24,25 @@ def main():
         "--input",
         help="intpu files",
         type=str
+    )
+    parser.add_argument(
+        "-m",
+        "--mode",
+        help="Cutting mode, mute cuts audio by mute, time cuts by time period, default mute",
+        type=str,
+        default="mute",
+        action=argparse.BooleanOptionalAction,
+        choices=[
+            "mute",
+            "time"
+        ]
+    )
+    parser.add_argument(
+        "-time_unit",
+        "--time_unit",
+        help="Cutting mode mute by time,ms",
+        type=int,
+        default=20 * 1000,
     )
     parser.add_argument(
         "-t",
@@ -68,11 +88,13 @@ def main():
     if os.path.isfile(input):
         handle(
             file=input,
+            model = args.model,
             threshold=args.threshold,
             min_length=args.min_length,
             min_interval=args.min_interval,
             hop_size=args.hop_size,
-            max_sil_kept=args.max_sil_kept
+            max_sil_kept=args.max_sil_kept,
+            time_unit = args.time_unit
         )
     elif os.path.isdir(input):
         dir = input
@@ -81,34 +103,41 @@ def main():
         for i, name in files:
             handle(
                 file=os.path.join(dir, name),
+                model = args.model,
                 threshold=args.threshold,
                 min_length=args.min_length,
                 min_interval=args.min_interval,
                 hop_size=args.hop_size,
-                max_sil_kept=args.max_sil_kept
+                max_sil_kept=args.max_sil_kept,
+                time_unit = args.time_unit
             )
 
 
 def handle(
     file: str,
+    model: str,
     threshold: int,
     min_length: int,
     min_interval: int,
     hop_size: int,
-    max_sil_kept: int
+    max_sil_kept: int,
+    time_unit: int = 20 * 1000
 ):
     print(f"handle==={file}")
     # Load an audio file with librosa.
     audio, sr = librosa.load(file, sr=None, mono=False)
-    slicer = Slicer(
-        sr=sr,
-        threshold=threshold,
-        min_length=min_length,
-        min_interval=min_interval,
-        hop_size=hop_size,
-        max_sil_kept=max_sil_kept
-    )
-    chunks = slicer.slice(audio)
+    if model == "mute":
+        chunks = slicer_time(file, time_unit)
+    else:
+        slicer = Slicer(
+            sr=sr,
+            threshold=threshold,
+            min_length=min_length,
+            min_interval=min_interval,
+            hop_size=hop_size,
+            max_sil_kept=max_sil_kept
+        )
+        chunks = slicer.slice(audio)
 
     file = file.replace("\\", "/")
     name = re.split("/", file)[-1].split(".")[0]
