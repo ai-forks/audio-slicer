@@ -17,7 +17,7 @@ def slicer_time(file:str, time_unit:int=20000):
         print(f"create dir {os.path.join(outdir)}")
         os.mkdir(outdir)
     for i, chunk in enumerate(chunks):
-        chunk_name = "{outdir}/{name}-{0}.wav".format(i)
+        chunk_name = f"{outdir}/{name}-{i}.wav"
         print(chunk_name)
         chunk.export(chunk_name, format="wav")
     
