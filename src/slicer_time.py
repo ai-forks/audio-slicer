@@ -17,7 +17,7 @@ def slicer_time(file: str, time_unit:int=20000):
     print(f"====chunks={cuts}")
     for i, seg in enumerate(cuts):
         chunk = seg.raw_data
-        if chunk is None or "shape" not in chunk :
+        if chunk is None :
             continue
         #chunk_name = "chunk{0}.wav".format(i)
         print ("exporting", i, seg.raw_data.shape)
