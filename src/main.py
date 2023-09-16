@@ -88,7 +88,7 @@ def main():
     if os.path.isfile(input):
         handle(
             file=input,
-            model = args.model,
+            mode = args.mode,
             threshold=args.threshold,
             min_length=args.min_length,
             min_interval=args.min_interval,
@@ -103,7 +103,7 @@ def main():
         for i, name in files:
             handle(
                 file=os.path.join(dir, name),
-                model = args.model,
+                mode = args.mode,
                 threshold=args.threshold,
                 min_length=args.min_length,
                 min_interval=args.min_interval,
@@ -115,7 +115,7 @@ def main():
 
 def handle(
     file: str,
-    model: str,
+    mode: str,
     threshold: int,
     min_length: int,
     min_interval: int,
@@ -126,7 +126,7 @@ def handle(
     print(f"handle==={file}")
     # Load an audio file with librosa.
     audio, sr = librosa.load(file, sr=None, mono=False)
-    if model == "time":
+    if mode == u"time":
         chunks = slicer_time(file, time_unit)
     else:
         slicer = Slicer(
