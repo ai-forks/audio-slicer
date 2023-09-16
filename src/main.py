@@ -125,13 +125,14 @@ def handle(
 ):
     print(f"handle==={file}")
     # Load an audio file with librosa.
-    audio, sr = librosa.load(file, sr=None, mono=False)
-    num_sections = np.ceil(len(audio) / sr)
-    duration = librosa.get_duration(y=audio, sr=sr)
-    print(f"num_sections={num_sections} {len(audio)} {sr} {duration}")
+   
     if mode == u"time":
-        chunks = slicer_time(y=audio, sr=sr, time_unit=time_unit)
+        slicer_time(file=file, time_unit=20*1000)
     else:
+        audio, sr = librosa.load(file, sr=None, mono=False)
+        num_sections = np.ceil(len(audio) / sr)
+        duration = librosa.get_duration(y=audio, sr=sr)
+        print(f"num_sections={num_sections} {len(audio)} {sr} {duration}")
         slicer = Slicer(
             sr=sr,
             threshold=threshold,
@@ -142,21 +143,20 @@ def handle(
         )
         print("audio m1", audio, audio.shape)
         chunks = slicer.slice(audio)
+        file = file.replace("\\", "/")
+        name = re.split("/", file)[-1].split(".")[0]
+        print(f"name={name}", chunks)
+        for i, chunk in enumerate(chunks):
+            if len(chunk.shape) > 1:
+                chunk = chunk.T  # Swap axes if the audio is stereo.
+            print(f"chunk={chunk} shape={chunk.shape}")
 
-    file = file.replace("\\", "/")
-    name = re.split("/", file)[-1].split(".")[0]
-    print(f"name={name}", chunks)
-    for i, chunk in enumerate(chunks):
-        if len(chunk.shape) > 1:
-            chunk = chunk.T  # Swap axes if the audio is stereo.
-        print(f"chunk={chunk} shape={chunk.shape}")
-
-        # Save sliced audio files with soundfile.
-        outdir = (f"clips_{name}")
-        if os.path.exists(outdir) != True :
-            print(f"create dir {os.path.join(outdir)}")
-            os.mkdir(outdir)
-        soundfile.write(f'{outdir}/{name}_{i}.wav', chunk, sr)
+            # Save sliced audio files with soundfile.
+            outdir = (f"clips_{name}")
+            if os.path.exists(outdir) != True :
+                print(f"create dir {os.path.join(outdir)}")
+                os.mkdir(outdir)
+            soundfile.write(f'{outdir}/{name}_{i}.wav', chunk, sr)
 
 
 def isabs_path(path: str):
