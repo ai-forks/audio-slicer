@@ -12,8 +12,12 @@ def slicer_time(file:str, time_unit:int=20000):
     names = re.split("/", file)[-1].split(".")
     name = names[0], ext = names[1]
     print(f"name={name}", chunks)
+    outdir = (f"clips_{name}")
+    if os.path.exists(outdir) != True :
+        print(f"create dir {os.path.join(outdir)}")
+        os.mkdir(outdir)
     for i, chunk in enumerate(chunks):
-        chunk_name = "{name}-{0}.wav".format(i)
+        chunk_name = "{outdir}/{name}-{0}.wav".format(i)
         print(chunk_name)
         chunk.export(chunk_name, format="wav")
     
