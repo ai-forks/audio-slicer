@@ -8,7 +8,8 @@ def slicer_time(file:str, time_unit:int=20000):
     audio = AudioSegment.from_file(file)
     chunks = make_chunks(audio, time_unit)  #将文件切割为10s一块
     names = re.split("/", file)[-1].split(".")
-    name = names[0], ext = names[1]
+    name = names[0]
+    ext = names[1]
     print(f"name={name}", chunks)
     outdir = (f"clips_{name}")
     if os.path.exists(outdir) != True :
