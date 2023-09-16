@@ -158,3 +158,7 @@ def isabs_path(path: str):
     if re.match(r"\d+:/?|\\?.*", path):
         return True
     return False
+
+
+if __name__ == '__main__':
+    main()
