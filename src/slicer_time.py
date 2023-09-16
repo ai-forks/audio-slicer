@@ -1,6 +1,7 @@
 from pydub import AudioSegment
 from pydub.utils import make_chunks
 import re
+import os
 
 # 按时间切换, 默认20s
 def slicer_time(file:str, time_unit:int=20000):
