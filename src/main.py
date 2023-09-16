@@ -142,9 +142,10 @@ def handle(
     name = re.split("/", file)[-1].split(".")[0]
     print(f"name={name}")
     for i, chunk in enumerate(chunks):
-        print(f"chunk={chunk}")
         if len(chunk.shape) > 1:
             chunk = chunk.T  # Swap axes if the audio is stereo.
+        print(f"chunk={chunk} shape={chunk.shape}")
+
         # Save sliced audio files with soundfile.
         outdir = (f"clips_{name}")
         if os.path.exists(outdir) != True :
