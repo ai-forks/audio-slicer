@@ -13,4 +13,5 @@ def slicer_time(file: str, time_unit:int=20000):
     audio = AudioSegment.from_file(file, ext)
     size = time_unit   #切割的毫秒数 10s=10000
     chunks = make_chunks(audio, size)  #将文件切割为10s一块
+    print(f"====chunks={chunks}")
     return chunks
