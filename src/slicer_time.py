@@ -13,12 +13,21 @@ def slicer_time(file: str, time_unit:int=20000):
     audio = AudioSegment.from_file(file, ext)
     size = time_unit   #切割的毫秒数 10s=10000
     chunks = []
-    cuts = make_chunks(audio, size)  #将文件切割为10s一块
-    print(f"====chunks={cuts}")
-    for i, seg in enumerate(cuts):
-        chunk = np.array(seg.raw_data)
+    segs = make_chunks(audio, size)  #将文件切割为10s一块
+    print(f"====chunks={segs}")
+    for i, seg in enumerate(segs):
+        chunk = pydub_to_np(seg)
         #chunk_name = "chunk{0}.wav".format(i)
-        print ("exporting", i, chunk)
+        print ("exporting", i, seg.channels, chunk.shape)
         #chunk.export(chunk_name, format="wav")
         chunks.append(chunk)
     return chunks
+    
+def pydub_to_np(audio: pydub.AudioSegment) -> (np.ndarray, int):
+    """
+    Converts pydub audio segment into np.float32 of shape [duration_in_seconds*sample_rate, channels],
+    where each value is in range [-1.0, 1.0]. 
+    Returns tuple (audio_np_array, sample_rate).
+    """
+    return np.array(audio.get_array_of_samples(), dtype=np.float32).reshape((-1, audio.channels)) / (
+            1 << (8 * audio.sample_width - 1)), audio.frame_rate
